@@ -3,18 +3,19 @@ const User = require("../models/User");
 const router = express.Router();
 
 // for password hashing..
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 // used for validation
 const { body, validationResult } = require("express-validator");
 
-var jwt = require('jsonwebtoken');
-
+var jwt = require("jsonwebtoken");
 
 // JWT
-const JWT_SECRET = 'hi$hi';
+// // will give authtoken to user who login jsonwebtoken (JWT) used to verify user
 
-// create a user using : POST "/api/auth/createuser". No Login Required..
+const JWT_SECRET = "hi$hi";
+
+// Route 1. create a user using : POST "/api/auth/createuser". No Login Required..
 router.post(
   "/createuser",
   [
@@ -53,33 +54,73 @@ router.post(
 
       const data = {
         user: {
-          id: user.id
-        }
-      }
+          id: user.id,
+        },
+      };
 
       const authToken = jwt.sign(data, JWT_SECRET);
       console.log(authToken);
 
-      res.json({authToken});
+      res.json({ authToken });
       //   .then((user) => res.json(user))
       //   .catch((e) => console.log("Error", e.message));
     } catch (error) {
-      console.error(error.message);
-      res.status(500).send("Some error occured.");
+      //console.error(error.message);
+      return res.status(500).send({ error: "Internal server error occured.." });
     }
   }
 );
 
-// will give authtoken to user who login jsonwebtoken (JWT) used to verify user
+//Route 2. Creating a login end point to authenticate a user.....
+// api/auth/login <- Name of endpoint
 
+router.post(
+  "/login",
+  [
+    body("email", "Enter a valid Email.").isEmail(),
+    body("password", "Password can't be blank.").notEmpty(),
+  ],
+  async (req, res) => {
+    let successfulLogin = false;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
+    const { email, password } = req.body;
+    try {
+      let user = await User.findOne({ email });
+      if (!user) {
+        successfulLogin = false;
+        return res
+          .status(400)
+          .json({ successfulLogin, error: "Please enter valid credentials." });
+      }
 
+      // comparing passwd with the encrypted password here password is written password and user.password which is saved on db
+      const passwordCompare = await bcrypt.compare(password, user.password);
 
+      if (!passwordCompare) {
+        successfulLogin = false;
+        return res
+          .status(400)
+          .json({ successfulLogin, error: "Please enter valid credentials." });
+      }
 
+      // payload of of user data
+      const data = {
+        user: {
+          id: user.id,
+        },
+      };
 
-
-
-
-
+      const authToken = jwt.sign(data, JWT_SECRET);
+      successfulLogin = true;
+      res.json({ successfulLogin, authToken });
+    } catch (error) {
+      return res.status(500).send({ error: "Internal server error occured.." });
+    }
+  }
+);
 
 module.exports = router;
