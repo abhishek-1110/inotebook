@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 // used for validation
 const { body, validationResult } = require("express-validator");
 
+var fetchuser = require("../middleware/fetchuser");
 var jwt = require("jsonwebtoken");
 
 // JWT
@@ -123,4 +124,18 @@ router.post(
   }
 );
 
+// Route 3. Get logged in user details /api/auth/getUser. Login Required.
+
+router.post("/getUser", fetchuser, async (req, res) => {
+  
+  try {
+    const userId = res.user;
+    const user = await User.findOne({userId}).select("-password");
+    res.send(user);
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal server error..");
+  }
+});
 module.exports = router;
