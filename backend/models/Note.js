@@ -1,6 +1,13 @@
-import mongoose from 'mongoose';
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const NotesSchema = new Schema({
+    // linking notes to user
+    user: {
+        // acts as a primarykey same as sql
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user' 
+    },
     title: {
         type: String,
         required: true
