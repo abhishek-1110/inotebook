@@ -12,7 +12,7 @@ router.get("/fetchallnotes", fetchuser, async (req, res) => {
 
     res.json(notes);
   } catch (error) {
-    res.status(500).send("Internal server error..");
+    res.status(500).send("Internal server error while fetching notes..");
   }
 });
 
@@ -46,9 +46,75 @@ router.post(
 
       res.json(savedNote);
     } catch (error) {
-      res.status(500).send("Internal server error..");
+      res.status(500).send("Internal server error while adding note..");
     }
   }
 );
+
+// Route 3. Update an exisiting note using put //login required  put request
+
+router.put("/updatenote/:id", fetchuser, async (req, res) => {
+  const { title, description, tag } = req.body;
+
+  try {
+    // Create a newNote object
+    const newNote = {};
+    if (title) {
+      newNote.title = title;
+    }
+
+    if (description) {
+      newNote.description = description;
+    }
+
+    if (tag) {
+      newNote.tag = tag;
+    }
+
+    // Find the note to be updated and update it
+    let note = await Note.findById(req.params.id);
+    if (!note) {
+      return res.status(404).send("Not found");
+    }
+
+    if (note.user.toString() !== req.user.id) {
+      return res.status(401).send("Not Authorized");
+    }
+
+    note = await Note.findByIdAndUpdate(
+      req.params.id,
+      { $set: newNote },
+      { new: true }
+    );
+
+    res.json({ note });
+  } catch (error) {
+    res.status(500).send("Internal server error while updating note..");
+  }
+});
+
+// Route 4. Delete Note of the specified user exisiting note //login required
+// delete request
+
+router.delete("/deletenote/:id", fetchuser, async (req, res) => {
+  try {
+    // Find the note to be deleted and delete it
+    let note = await Note.findById(req.params.id);
+    if (!note) {
+      return res.status(404).send("Not found");
+    }
+
+    if (note.user.toString() !== req.user.id) {
+      return res.status(401).send("Not Authorized");
+    }
+
+    // to delete
+    note = await Note.findByIdAndDelete(req.params.id);
+
+    res.json({ Succes: "Note has been deleted.", note: note });
+  } catch (error) {
+    res.status(500).send("Internal server error while deleting note..");
+  }
+});
 
 module.exports = router;
