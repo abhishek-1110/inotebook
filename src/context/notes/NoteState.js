@@ -2,68 +2,77 @@ import { useState } from "react";
 import noteContext from "./NoteContext";
 
 const NoteState = (props) => {
-  const notesInitial = [
-    {
-      _id: "63f1eb30378c9d1acb368d0c",
-      user: "63edc63cb825ef0eeb4a2f97",
-      title: "My 1 title",
-      description: "My 1 description..",
-      tag: "General",
-      date: "2023-02-19T09:26:08.559Z",
-      __v: 0,
-    },
-    {
-      _id: "63f21a2749e594fc8d938c432",
-      user: "63edc63cb825ef0eeb4a2f97",
-      title: "My 2 title",
-      description: "My 2 description..",
-      tag: "General",
-      date: "2023-02-19T12:46:31.497Z",
-      __v: 0,
-    },
-    {
-      _id: "63f21a2749e594fc8d938c442",
-      user: "63edc63cb825ef0eeb4a2f97",
-      title: "My 3 title",
-      description: "My 3 description..",
-      tag: "General",
-      date: "2023-02-19T12:46:31.497Z",
-      __v: 0,
-    },
-    {
-      _id: "63f21a2749e594fc8d938c452",
-      user: "63edc63cb825ef0eeb4a2f97",
-      title: "My 4 title",
-      description: "My 4 description..",
-      tag: "General",
-      date: "2023-02-19T12:46:31.497Z",
-      __v: 0,
-    },
-  ];
+  const host = "http://localhost:5000/";
+  const notesInitial = [];
 
   const [notes, setNotes] = useState(notesInitial);
 
-  // add a note
-  const addNote = (title, description, tag) => {
+  // get all notes
+  const getNotes = async () => {
     // to do api call
-    console.log("Adding a new Note");
-
-    const note = {
-      _id: "63f1eb30378c9d1acb368d0c",
-      user: "63edc63cb825ef0eeb4a2f97",
-      title: title,
-      description: description,
-      tag: tag,
-      date: "2023-02-19T09:26:08.559Z",
-      __v: 0,
-    };
-    // concat
-    setNotes(notes.concat(note));
+    // api calls
+    const response = await fetch(`${host}api/notes/fetchallnotes`, {
+      method: "GET", // *GET, POST, PUT, DELETE, etc.
+      // mode: 'cors', // no-cors, *cors, same-origin
+      // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      // credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNlZGM2M2NiODI1ZWYwZWViNGEyZjk3In0sImlhdCI6MTY3NjYxODk4NX0.yi9AqGzIbkomCS8KnHdgt36TWnlU0xBh966ZiAGshOo",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    const json = await response.json();
+    console.log(json);
+    // concat setnotes
+    setNotes(json)
   };
 
+  // add a note
+  const addNote = async (title, description, tag) => {
+    // to do api call
+    // api calls
+    const response = await fetch(`${host}api/notes/addnote`, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      // mode: 'cors', // no-cors, *cors, same-origin
+      // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      // credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNlZGM2M2NiODI1ZWYwZWViNGEyZjk3In0sImlhdCI6MTY3NjYxODk4NX0.yi9AqGzIbkomCS8KnHdgt36TWnlU0xBh966ZiAGshOo",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      // redirect: 'follow', // manual, *follow, error
+      // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify({ title, description, tag }), // body data type must match "Content-Type" header
+    });
+    console.log("Adding a new Note");
+
+    const note = await response.json();
+    setNotes(notes.concat(note))
+    };
+
   // delete a note
-  const deleteNote = (id) => {
+  const deleteNote = async (id) => {
     console.log("Deleteing note with id" + id);
+    const response = await fetch(`${host}api/notes/deletenote/${id}`, {
+      method: "DELETE", // *GET, POST, PUT, DELETE, etc.
+      // mode: 'cors', // no-cors, *cors, same-origin
+      // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      // credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNlZGM2M2NiODI1ZWYwZWViNGEyZjk3In0sImlhdCI6MTY3NjYxODk4NX0.yi9AqGzIbkomCS8KnHdgt36TWnlU0xBh966ZiAGshOo",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+    const json = response.json();
+    console.log(json);
+
     const newNotes = notes.filter((note) => {
       return note._id !== id;
     });
@@ -71,14 +80,43 @@ const NoteState = (props) => {
   };
 
   // edit a note
-  const editNote = (id, title, description, tag) => {
+  const editNote = async (id, title, description, tag) => {
+    // api calls
 
+    const response = await fetch(`${host}api/notes/updatenote/${id}`, {
+      method: "PUT", // *GET, POST, PUT, DELETE, etc.
+      // mode: 'cors', // no-cors, *cors, same-origin
+      // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+      // credentials: 'same-origin', // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json",
+        "auth-token":
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjNlZGM2M2NiODI1ZWYwZWViNGEyZjk3In0sImlhdCI6MTY3NjYxODk4NX0.yi9AqGzIbkomCS8KnHdgt36TWnlU0xBh966ZiAGshOo",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      // redirect: 'follow', // manual, *follow, error
+      // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+      body: JSON.stringify({ title, description, tag }), // body data type must match "Content-Type" header
+    });
+    const json = await response.json(); // parses JSON response into native JavaScript objects
 
-
+    // creating new notes
+    let newNotes = JSON.parse(JSON.stringify(notes)) // to make deep copy
+    // logic to edit in client
+    for (let index = 0; index < newNotes.length; index++) {
+      const element = newNotes[index];
+      if (element._id === id) {
+        newNotes[index].title = title;
+        newNotes[index].description = description;
+        newNotes[index].tag = tag;
+        break;
+      }
+     }
+    setNotes(newNotes);
   };
 
   return (
-    <noteContext.Provider value={{ notes, addNote, deleteNote, editNote }}>
+    <noteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes }}>
       {props.children}
     </noteContext.Provider>
   );

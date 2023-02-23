@@ -1,10 +1,10 @@
 import Notes from "./Notes";
 
 const Home = () => {
-
   return (
-    <>     
-     <Notes ></Notes>
+    <>
+
+      <Notes></Notes>
     </>
   );
 };

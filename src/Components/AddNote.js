@@ -8,6 +8,7 @@ const AddNote = () => {
   const [note, setNote] = useState({title: "", description: "", tag: ""})
   
   const onChange = (e) => {
+
         // spread 
         setNote({...note, [e.target.name]: e.target.value })
   };
@@ -15,9 +16,15 @@ const AddNote = () => {
   const handleClick = (e) => {
     // to prevent page from loading
     e.preventDefault();
-    addNote(note.title, note.description, note.tag);
 
+    // to do handle with alert 
+    if (note.title.length <= 3 || note.description.length <= 3 || note.tag.length <= 3) {
+      console.log("Pleaase enter full vakye");
+      return;
+    }
+    addNote(note.title, note.description, note.tag);
   };
+
   return (
     <div className="container my-3">
       <h2>Add a Note</h2>
@@ -45,8 +52,19 @@ const AddNote = () => {
           onChange={onChange}
         ></textarea>
       </div>
+      <div className="mb-3">
+        <label htmlFor="exampleFormControlTextarea1" className="form-label">
+          Tag
+        </label>
+        <input type = "text"
+          className="form-control"
+          id="tag"
+          name="tag"
+          onChange={onChange}
+        ></input>
+      </div>
       <div className="button">
-        <button type="button" class="btn btn-primary" onClick={handleClick}>
+        <button type="button" className="btn btn-primary" onClick={handleClick}>
           Add Note
         </button>
       </div>
