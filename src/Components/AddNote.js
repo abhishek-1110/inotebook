@@ -34,7 +34,7 @@ const AddNote = (props) => {
       props.showAlert("Length should be greater than or equal to 3", "danger");
       return;
     }
-    props.showAlert(" Note added Successfully...", "success");
+    props.showAlert(" Note added Successfully", "success")
     setNote(({title: "", description: "", tag: ""}));
 >>>>>>> 0719ca2 (Added to git)
     addNote(note.title, note.description, note.tag);
