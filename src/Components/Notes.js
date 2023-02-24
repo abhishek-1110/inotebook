@@ -3,7 +3,11 @@ import noteContext from "../context/notes/NoteContext";
 import { NoteItem } from "./NoteItem";
 import AddNote from "./AddNote";
 
+<<<<<<< HEAD
 const Notes = () => {
+=======
+const Notes = (props) => {
+>>>>>>> 0719ca2 (Added to git)
   const context = useContext(noteContext);
 
   const { notes, getNotes, editNote } = context;
@@ -30,9 +34,22 @@ const Notes = () => {
   };
 
   const updateNote = (currentNote) => {
+<<<<<<< HEAD
     // to show or hide modal
     ref.current.click();
     setNote({id: currentNote._id, title: currentNote.title, description: currentNote.description, tag: currentNote.tag});
+=======
+    
+    // to show or hide modal
+    ref.current.click();
+    setNote({
+      id: currentNote._id,
+      title: currentNote.title,
+      description: currentNote.description,
+      tag: currentNote.tag,
+    });
+    props.showAlert("Note Updated", "success");
+>>>>>>> 0719ca2 (Added to git)
   };
 
   const handleClick = (e) => {
@@ -46,7 +63,11 @@ const Notes = () => {
 
   return (
     <>
+<<<<<<< HEAD
       <AddNote />
+=======
+      <AddNote showAlert={props.showAlert} />
+>>>>>>> 0719ca2 (Added to git)
 
       <button
         ref={ref}
@@ -58,7 +79,10 @@ const Notes = () => {
       >
         Launch demo modal
       </button>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0719ca2 (Added to git)
       <div
         className="modal fade"
         id="exampleModal"
@@ -112,6 +136,11 @@ const Notes = () => {
                   name="description"
                   value={note.description}
                   onChange={onChange}
+<<<<<<< HEAD
+=======
+                  minLength={3}
+                  required
+>>>>>>> 0719ca2 (Added to git)
                 ></textarea>
               </div>
               <div className="mb-3">
@@ -155,6 +184,12 @@ const Notes = () => {
       <div className="row my-3">
         <h2>Your Notes</h2>
         {/* To map your notes and display */}
+<<<<<<< HEAD
+=======
+        {/* <div className="container mx-2">
+        {notes.length === 0 && "No Notes to Display.. "}
+        </div> */}
+>>>>>>> 0719ca2 (Added to git)
         {notes.map((note) => {
           return (
             <NoteItem

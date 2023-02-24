@@ -1,4 +1,8 @@
 import { useState } from "react";
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0719ca2 (Added to git)
 import noteContext from "./NoteContext";
 
 const NoteState = (props) => {
@@ -24,9 +28,15 @@ const NoteState = (props) => {
       },
     });
     const json = await response.json();
+<<<<<<< HEAD
     console.log(json);
     // concat setnotes
     setNotes(json)
+=======
+
+    // concat setnotes
+    setNotes(notes.concat(json))
+>>>>>>> 0719ca2 (Added to git)
   };
 
   // add a note
@@ -49,15 +59,26 @@ const NoteState = (props) => {
       // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
       body: JSON.stringify({ title, description, tag }), // body data type must match "Content-Type" header
     });
+<<<<<<< HEAD
     console.log("Adding a new Note");
 
     const note = await response.json();
     setNotes(notes.concat(note))
+=======
+
+    const note = await response.json();
+    setNotes(notes.concat(note))
+
+>>>>>>> 0719ca2 (Added to git)
     };
 
   // delete a note
   const deleteNote = async (id) => {
+<<<<<<< HEAD
     console.log("Deleteing note with id" + id);
+=======
+
+>>>>>>> 0719ca2 (Added to git)
     const response = await fetch(`${host}api/notes/deletenote/${id}`, {
       method: "DELETE", // *GET, POST, PUT, DELETE, etc.
       // mode: 'cors', // no-cors, *cors, same-origin
@@ -71,8 +92,13 @@ const NoteState = (props) => {
       },
     });
     const json = response.json();
+<<<<<<< HEAD
     console.log(json);
 
+=======
+
+  
+>>>>>>> 0719ca2 (Added to git)
     const newNotes = notes.filter((note) => {
       return note._id !== id;
     });
@@ -109,7 +135,10 @@ const NoteState = (props) => {
         newNotes[index].title = title;
         newNotes[index].description = description;
         newNotes[index].tag = tag;
+<<<<<<< HEAD
         break;
+=======
+>>>>>>> 0719ca2 (Added to git)
       }
      }
     setNotes(newNotes);
