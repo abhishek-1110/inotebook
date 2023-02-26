@@ -15,7 +15,6 @@ var jwt = require("jsonwebtoken");
 // // will give authtoken to user who login jsonwebtoken (JWT) used to verify user
 
 const JWT_SECRET = "hi$hi";
-
 // Route 1. create a user using : POST "/api/auth/createuser". No Login Required..
 router.post(
   "/createuser",
@@ -28,6 +27,8 @@ router.post(
     ).isLength({ min: 5 }),
   ],
   async (req, res) => {
+    let success = false;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -37,8 +38,9 @@ router.post(
     // check whether the user (email) exists already
     try {
       let user = await User.findOne({ email: req.body.email });
+
       if (user) {
-        return res.status(400).json({
+        return res.status(400).json({ success,
           error: "Sorry a user with this email address exists already..",
         });
       }
@@ -62,7 +64,8 @@ router.post(
       const authToken = jwt.sign(data, JWT_SECRET);
       console.log(authToken);
 
-      res.json({ authToken });
+      success = true;
+      res.json({ success, authToken });
       //   .then((user) => res.json(user))
       //   .catch((e) => console.log("Error", e.message));
     } catch (error) {
@@ -135,7 +138,7 @@ router.post("/getUser", fetchuser, async (req, res) => {
     
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal server error..");
+    res.status(500).send("Internal server error while authenticating..");
   }
 });
 module.exports = router;

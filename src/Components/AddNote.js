@@ -1,21 +1,13 @@
 import React, { useContext, useState } from "react";
 import noteContext from "../context/notes/NoteContext";
 
-<<<<<<< HEAD
-const AddNote = () => {
-=======
 const AddNote = (props) => {
->>>>>>> 0719ca2 (Added to git)
   const context = useContext(noteContext);
   const { addNote } = context;
 
   const [note, setNote] = useState({title: "", description: "", tag: ""})
   
   const onChange = (e) => {
-<<<<<<< HEAD
-
-=======
->>>>>>> 0719ca2 (Added to git)
         // spread 
         setNote({...note, [e.target.name]: e.target.value })
   };
@@ -26,17 +18,11 @@ const AddNote = (props) => {
 
     // to do handle with alert 
     if (note.title.length <= 3 || note.description.length <= 3 || note.tag.length <= 3) {
-<<<<<<< HEAD
-      console.log("Pleaase enter full vakye");
-      return;
-    }
-=======
       props.showAlert("Length should be greater than or equal to 3", "danger");
       return;
     }
-    props.showAlert(" Note added Successfully", "success")
+    props.showAlert(" Note added Successfully...", "success");
     setNote(({title: "", description: "", tag: ""}));
->>>>>>> 0719ca2 (Added to git)
     addNote(note.title, note.description, note.tag);
   };
 
@@ -52,10 +38,7 @@ const AddNote = (props) => {
           className="form-control"
           id="title"
           name="title"
-<<<<<<< HEAD
-=======
           value={note.title}
->>>>>>> 0719ca2 (Added to git)
           onChange={onChange}
         />
       </div>
@@ -67,10 +50,7 @@ const AddNote = (props) => {
           className="form-control"
           id="description"
           rows="3"
-<<<<<<< HEAD
-=======
           value={note.description}
->>>>>>> 0719ca2 (Added to git)
           name="description"
           onChange={onChange}
         ></textarea>
@@ -83,10 +63,7 @@ const AddNote = (props) => {
           className="form-control"
           id="tag"
           name="tag"
-<<<<<<< HEAD
-=======
           value={note.tag}
->>>>>>> 0719ca2 (Added to git)
           onChange={onChange}
         ></input>
       </div>

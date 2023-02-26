@@ -4,17 +4,15 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import About from "./Components/About";
 import Home from "./Components/Home";
 import NoteState from "./context/notes/NoteState";
-import Alert from "./Components/Alert";
-<<<<<<< HEAD
-
-function App() {
-=======
+import Signup from "./Components/Signup";
+import Login from "./Components/Login";
 import { useState } from "react";
+import Alert from "./Components/Alert";
 
 function App() {
   const [alert, setAlert] = useState();
 
-  const showAlertMessage = (message, type) => {
+  const showAlert = (message, type) => {
     setAlert({
       message: message,
       type: type,
@@ -24,22 +22,27 @@ function App() {
       setAlert(null);
     }, 2000);
   };
->>>>>>> 0719ca2 (Added to git)
+
   return (
     <>
-      <NoteState>
+      <NoteState showAlert={showAlert}>
         <Router>
           <Navbar />
-<<<<<<< HEAD
-          <Alert message = "HEEEY"/>
-          <Routes>
-          </Routes>
-=======
->>>>>>> 0719ca2 (Added to git)
+          <Alert message={alert} />
           <div className="container">
             <Routes>
               <Route exact path="/Home" element={<Home />}></Route>
               <Route exact path="/About" element={<About />}></Route>
+              <Route
+                exact
+                path="/login"
+                element={<Login showAlert={showAlert} />}
+              ></Route>
+              <Route
+                exact
+                path="/signup"
+                element={<Signup showAlert={showAlert} />}
+              ></Route>
             </Routes>
           </div>
         </Router>

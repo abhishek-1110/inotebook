@@ -43,12 +43,12 @@ const Navbar = () => {
             </ul>
           </div>
           <div className="d-flex">
-          <button type="button" className="btn btn-secondary" >
+          <Link type="button" className="btn btn-secondary mx-2" to = "/login" >
           Login
-        </button>
-        <button type="button" className="btn btn-primary" >
+        </Link>
+        <Link type="button" className="btn btn-primary" to = "/signup" >
           Sign up
-        </button>
+        </Link>
           </div>
         </div>
       </nav>
