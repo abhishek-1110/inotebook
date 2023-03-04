@@ -31,6 +31,7 @@ function App() {
           <Alert message={alert} />
           <div className="container">
             <Routes>
+             <Route exact path="/" element={<Home />}></Route>
               <Route exact path="/Home" element={<Home />}></Route>
               <Route exact path="/About" element={<About />}></Route>
               <Route
