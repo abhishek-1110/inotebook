@@ -18,7 +18,7 @@ const Signup = (props) => {
       props.showAlert("Password length should be greater than 5", "danger");
       return;
     }
-    if (password != confirmpassword) {
+    if (password !== confirmpassword) {
       props.showAlert(
         "Password and confirm password doesn't matches. Please check",
         "danger"
