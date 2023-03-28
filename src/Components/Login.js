@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 // useHistoy has been changed with useNavigate
 const Login = (props) => {
-
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -31,13 +30,12 @@ const Login = (props) => {
     console.log(json);
     if (json.successfulLogin) {
       // Save the auth token and redirect
-      localStorage.setItem("token", json.authtoken);
-      navigate("/Home");
+      localStorage.setItem("token", json.authToken);
       props.showAlert("Successfull Login", "success");
+      navigate("/Home");
     } else {
       alert("Invalid credentials");
       props.showAlert("Invalid credentials", "danger");
-
     }
   };
 
