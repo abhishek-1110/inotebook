@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import '../css/Signup.css';
 
 const Signup = (props) => {
   const [credentials, setCredentials] = useState({
@@ -9,13 +10,17 @@ const Signup = (props) => {
     confirmpassword: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const { name, email, password, confirmpassword } = credentials;
     if (password.length < 5) {
       props.showAlert("Password length should be greater than 5", "danger");
+      setIsLoading(false);
       return;
     }
     if (password !== confirmpassword) {
@@ -23,6 +28,7 @@ const Signup = (props) => {
         "Password and confirm password doesn't matches. Please check",
         "danger"
       );
+      setIsLoading(false);
       return;
     }
     const response = await fetch("http://localhost:5000/api/auth/createuser", {
@@ -50,6 +56,7 @@ const Signup = (props) => {
     } else {
       props.showAlert("User already exists", "danger");
     }
+    setIsLoading(false);
   };
 
   const onChange = (e) => {
@@ -62,7 +69,7 @@ const Signup = (props) => {
       <h4 className="mb-2">Sign Up Here:</h4>
       <form onSubmit={handleSubmit} className="container">
         <div className="mb-3">
-          <label htmlFor="email" className="form-label">
+          <label htmlFor="name" className="form-label">
             Name
           </label>
           <input
@@ -119,8 +126,20 @@ const Signup = (props) => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
-          Submit
+        <button
+          type="submit"
+          className={`btn btn-primary ${isLoading ? "disabled" : ""}`}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <div
+              className="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></div>
+          ) : (
+            <span>Submit</span>
+          )}
         </button>
       </form>
     </div>

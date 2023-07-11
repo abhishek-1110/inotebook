@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import "../css/Login.css";
 // useHistoy has been changed with useNavigate
 const Login = (props) => {
   const [credentials, setCredentials] = useState({
@@ -8,10 +8,14 @@ const Login = (props) => {
     password: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setIsLoading(true);
 
     const response = await fetch("http://localhost:5000/api/auth/login", {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
@@ -37,6 +41,7 @@ const Login = (props) => {
       alert("Invalid credentials");
       props.showAlert("Invalid credentials", "danger");
     }
+    setIsLoading(false);
   };
 
   const onChange = (e) => {
@@ -46,7 +51,8 @@ const Login = (props) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="my-form">
+      <h4 className="mb-2 mt-2">Login in Here:</h4>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">
             Email address
@@ -78,8 +84,18 @@ const Login = (props) => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary">
-          Submit
+        <button
+          type="submit"
+          className={`btn btn-primary ${isLoading ? "disabled" : ""}`}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <div className="spinner-border spinner-border-sm" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          ) : (
+            <span>Submit</span>
+          )}
         </button>
       </form>
     </>
